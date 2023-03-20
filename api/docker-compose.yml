@@ -1,0 +1,27 @@
+version: '3'
+services:
+  nodejs:
+    build:
+      context: .
+    image: api-nodejs
+    volumes:
+      - ./src:/usr/src/app
+    depends_on:
+      - mysql
+    ports:
+      - '3000:3000'
+
+  mysql:
+    image: 'mysql/mysql-server:8.0'
+    container_name: api-mysql
+    volumes:
+      - ./docker-compose/mysql:/docker-entrypoint-initdb.d
+    ports:
+      - '33066:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: 'rootpwd'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: 'test'
+      MYSQL_USER: 'user'
+      MYSQL_PASSWORD: 'pwd'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
